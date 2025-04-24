@@ -38,19 +38,25 @@ export default function Calendar() {
   
   // Create a day-content render function to show tracking status
   const renderDayContent = (day: Date) => {
-    if (!monthlyTrackings) return null;
+    if (!monthlyTrackings || !day || !(day instanceof Date) || isNaN(day.getTime())) return null;
     
-    const tracking = monthlyTrackings.find(t => 
-      isSameDay(new Date(t.date), day)
-    );
-    
-    if (!tracking) return null;
-    
-    return (
-      <div className="w-full flex justify-center">
-        <Badge variant={tracking.isMouthTaped ? "default" : "destructive"} className="w-1.5 h-1.5 rounded-full p-0 mt-1" />
-      </div>
-    );
+    try {
+      const tracking = monthlyTrackings.find(t => {
+        const trackingDate = new Date(t.date);
+        return trackingDate && !isNaN(trackingDate.getTime()) && isSameDay(trackingDate, day);
+      });
+      
+      if (!tracking) return null;
+      
+      return (
+        <div className="w-full flex justify-center">
+          <Badge variant={tracking.isMouthTaped ? "default" : "destructive"} className="w-1.5 h-1.5 rounded-full p-0 mt-1" />
+        </div>
+      );
+    } catch (error) {
+      console.error("Error rendering day content:", error);
+      return null;
+    }
   };
   
   // Fetch details for a selected day
@@ -129,12 +135,17 @@ export default function Calendar() {
                 onMonthChange={setMonth}
                 className="rounded-md border mx-auto"
                 components={{
-                  DayContent: ({ day }) => (
-                    <>
-                      <span>{format(day, "d")}</span>
-                      {renderDayContent(day)}
-                    </>
-                  ),
+                  DayContent: ({ day }) => {
+                    if (!day || !(day instanceof Date) || isNaN(day.getTime())) {
+                      return <span>?</span>;
+                    }
+                    return (
+                      <>
+                        <span>{format(day, "d")}</span>
+                        {renderDayContent(day)}
+                      </>
+                    );
+                  },
                 }}
               />
               
