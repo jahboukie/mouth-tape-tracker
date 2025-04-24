@@ -25,7 +25,7 @@ export default function TabBar({ currentPath }: TabBarProps) {
           <Link key={tab.path} href={tab.path}>
             <div className={cn(
               "flex flex-col items-center justify-center",
-              isActive(tab.path) ? "text-primary-600" : "text-slate-500"
+              isActive(tab.path) ? "text-violet-700" : "text-slate-500"
             )}>
               <tab.icon className="h-6 w-6" />
               <span className="text-xs mt-1">{tab.label}</span>
@@ -47,7 +47,7 @@ export default function TabBar({ currentPath }: TabBarProps) {
           <Link key={tab.path} href={tab.path}>
             <div className={cn(
               "flex flex-col items-center justify-center",
-              isActive(tab.path) ? "text-primary-600" : "text-slate-500"
+              isActive(tab.path) ? "text-violet-700" : "text-slate-500"
             )}>
               <tab.icon className="h-6 w-6" />
               <span className="text-xs mt-1">{tab.label}</span>
