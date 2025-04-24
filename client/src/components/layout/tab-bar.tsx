@@ -36,7 +36,7 @@ export default function TabBar({ currentPath }: TabBarProps) {
         <div className="flex justify-center">
           <ShareDialog>
             <div>
-              <Button className="bg-primary-500 text-white rounded-full h-14 w-14 -mt-5 flex items-center justify-center shadow-lg hover:bg-primary-600">
+              <Button className="bg-violet-700 text-white rounded-full h-14 w-14 -mt-5 flex items-center justify-center shadow-lg hover:bg-violet-800">
                 <Plus className="h-8 w-8" />
               </Button>
             </div>
