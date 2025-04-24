@@ -12,6 +12,7 @@ import { StarRating } from "@/components/tracker/daily-tracker";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { format, startOfMonth, endOfMonth, isSameDay } from "date-fns";
 import type { User, Tracking } from "@shared/schema";
+import { DayContentProps } from "react-day-picker";
 
 export default function Calendar() {
   const [date, setDate] = useState<Date>(new Date());
@@ -135,16 +136,23 @@ export default function Calendar() {
                 onMonthChange={setMonth}
                 className="rounded-md border mx-auto"
                 components={{
-                  DayContent: ({ day }) => {
-                    if (!day || !(day instanceof Date) || isNaN(day.getTime())) {
+                  DayContent: (props) => {
+                    try {
+                      // We need to safely access the day property
+                      const day = props.date;
+                      if (!day || !(day instanceof Date) || isNaN(day.getTime())) {
+                        return <span>?</span>;
+                      }
+                      return (
+                        <>
+                          <span>{format(day, "d")}</span>
+                          {renderDayContent(day)}
+                        </>
+                      );
+                    } catch (error) {
+                      console.error("Error rendering calendar day:", error);
                       return <span>?</span>;
                     }
-                    return (
-                      <>
-                        <span>{format(day, "d")}</span>
-                        {renderDayContent(day)}
-                      </>
-                    );
                   },
                 }}
               />
